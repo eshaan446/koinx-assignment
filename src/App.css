@@ -48,7 +48,16 @@
   white-space: nowrap;
   width: fit-content;
 }
-
+.text-wrapper-small{
+  color: var(--gray-1);
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 21.60px;
+  margin-top: -1px;
+  word-wrap: break-word;
+}
 .frame .div-2 {
   align-items: flex-start;
   display: inline-flex;
