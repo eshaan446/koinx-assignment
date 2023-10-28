@@ -89,8 +89,9 @@ const App = () => {
     setexpense(e.target.value)
   }
   const handleTaxIndex = (e) => {
-    settaxind(e.target.value);
+    settaxind(parseInt(e.target.value));
     calculate();
+    
   }
   const calculate = () => {
     let saleprice = getNumericValue(sale);
@@ -100,26 +101,47 @@ const App = () => {
     if (capitalgains >= 0) {
       setlongTermDiscount(capitalgains / 2);
     }
-    if (shortterm) {
-      setnetCapitalGains(capitalgains);
+
+    if (longterm) {
+      console.log("longterm hit")
+      setnetCapitalGains((capitalgains - longTermDiscount));
     } else {
-      setnetCapitalGains(capitalgains - longTermDiscount);
+      setnetCapitalGains(capitalgains);
     }
-    if (taxind === "0") {
-      console.log(taxind)
+
+    if (taxind === 0) {
       setfinaltax(0);
-    } else if (taxind === "1") {
-      let x = 19 * netCapitalGains / 100
+    } else if (taxind === 1) {
+      if(shortterm){
+        let x = 19 * capitalgains / 100
+        setfinaltax(x);
+      }else{
+      let x = 19 * longTermDiscount / 100
       setfinaltax(x);
-    } else if (taxind === "2") {
-      let x = 32.5 * netCapitalGains / 100
+      }
+    } else if (taxind === 2) {
+      if(shortterm){
+        let x = 32.5 * capitalgains / 100
+        setfinaltax(x);
+      }else{
+      let x = 32.5 * longTermDiscount / 100
       setfinaltax(x);
-    } else if (taxind === "3") {
-      let x = 37 * netCapitalGains / 100
+      }
+    } else if (taxind === 3) {
+      if(shortterm){
+        let x = 37 * capitalgains / 100
+        setfinaltax(x);
+      }else{
+      let x = 37 * longTermDiscount / 100
       setfinaltax(x);
-    } else if (taxind === "4") {
-      let x = 45 * netCapitalGains / 100
-      setfinaltax(x);
+      }
+    } else if (taxind === 4) {
+      if(shortterm){
+        let x = 45 * capitalgains / 100
+        setfinaltax(x);
+      }else{
+      let x = 45 * longTermDiscount / 100
+      setfinaltax(x);}
     }
 
   }
@@ -207,14 +229,14 @@ const App = () => {
                 <div className="div-10">
                   <div className="text-wrapper-6">Investment Type</div>
                   <div className="div-11">
-                    <div className="div-12" onClick={() => calculate()}>
+                    <div className="div-12">
                       <div className={classNames('component', { 'component-active': shortterm })} onClick={() => { setshortterm(true); setlongtterm(false); }}>
                         <div className={classNames('trading', { 'trading-active': shortterm })}>Short Term</div>
                         {shortterm && <img className="img" alt="Frame" src="/mdi_tick.svg" />}
                       </div>
                       <div className="element-months">&lt; 12 months</div>
                     </div>
-                    <div className="div-12" onClick={() => calculate()}>
+                    <div className="div-12">
                       <div className={classNames('component-2', { 'component2-active': longterm })} onClick={() => { setlongtterm(true); setshortterm(false); }}>
                         <div className={classNames('trading-2', { 'trading2-active': longterm })}>Long Term</div>
                         {longterm && (<img className="img-2" alt="Frame" src="/mdi_tick.svg" />)}
