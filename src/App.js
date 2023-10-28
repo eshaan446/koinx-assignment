@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import classNames from 'classnames';
 import "./App.css";
+import Cleave from "cleave.js/react";
 
 
 const taxbrackets = [
@@ -49,6 +50,9 @@ const App = () => {
   const [netCapitalGains, setnetCapitalGains] = useState(0);
   const [finaltax, setfinaltax] = useState(0);
 
+  const getNumericValue = (formattedValue) => {
+    return parseFloat(formattedValue.replace(/,/g, ""));
+  };
   const handlePurchase = (e) => {
     setpurchase(e.target.value);
   }
@@ -63,9 +67,9 @@ const App = () => {
     calculate();
   }
   const calculate = () => {
-    let saleprice = parseInt(sale);
-    let purchaseprice = parseInt(purchase);
-    let expenseprice = parseInt(expense);
+    let saleprice = getNumericValue(sale);
+    let purchaseprice = getNumericValue(purchase);
+    let expenseprice = getNumericValue(expense);
     setcapitalgains(saleprice - purchaseprice - expenseprice);
     if (capitalgains >= 0) {
       setlongTermDiscount(capitalgains / 2);
@@ -137,13 +141,13 @@ const App = () => {
               <div className="div-10">
                 <p className="text-wrapper-5">Enter purchase price of Crypto</p>
                 <div className="div-wrapper-2">
-                  <div className="text-wrapper-3">$ <input type="text" value={purchase} onChange={(e) => handlePurchase(e)} /></div>
+                  <div className="text-wrapper-3">$ <Cleave className="input" options={{numeral:true}} value={purchase} onChange={(e) => handlePurchase(e)} /></div>
                 </div>
               </div>
               <div className="div-10">
                 <p className="text-wrapper-5">Enter sale price of Crypto</p>
                 <div className="div-wrapper-2">
-                  <div className="text-wrapper-3">$  <input type="text" value={sale} onChange={(e) => handleSale(e)} /></div>
+                  <div className="text-wrapper-3">$  <Cleave className="input" options={{numeral:true}} value={sale} onChange={(e) => handleSale(e)} /></div>
                 </div>
               </div>
             </div>
@@ -151,7 +155,7 @@ const App = () => {
               <div className="div-10">
                 <div className="text-wrapper-5">Enter your Expenses</div>
                 <div className="div-wrapper-2">
-                  <div className="text-wrapper-3">$ <input type="text" value={expense} onChange={(e) => handleExpense(e)} /></div>
+                  <div className="text-wrapper-3">$ <Cleave className="input" options={{numeral:true}} value={expense} onChange={(e) => handleExpense(e)} /></div>
                 </div>
               </div>
               <div className="div-10">
@@ -206,13 +210,15 @@ const App = () => {
               <div className="div-10">
                 <div className="text-wrapper-5">Capital gains amount</div>
                 <div className="div-wrapper-2">
-                  <div className="text-wrapper-3">$  <input type="number" value={capitalgains} disabled /></div>
+                  <div className="text-wrapper-3">$  <Cleave className="input" options={{numeral:true}} value={capitalgains} disabled /></div>
                 </div>
               </div>
               <div className="div-10">
                 <div className="text-wrapper-5">Discount for long term gains</div>
                 <div className="div-wrapper-2">
-                  <div className="text-wrapper-3">${(capitalgains >= 0) ? netCapitalGains : 0}</div>
+                  <div className="text-wrapper-3">$   <Cleave className="input" options={{numeral:true}} value={(capitalgains >= 0) ? netCapitalGains : 0} disabled />
+                  
+                  {}</div>
                 </div>
               </div>
             </div>)}
