@@ -41,19 +41,25 @@ const faq = [
 ]
 
 const countries = [
-  "Australia",
-  "United States",
-  "United Kingdom",
-  "Canada",
-  "Germany",
-  "Japan",
-  "South Korea",
-  "France",
-  "India",
-  "Russia",
-  "China",
-  "Singapore",
+  { id: 0, country: "Australia" },
+  { id: 1, country: "United States" },
+  { id: 2, country: "United Kingdom" },
+  { id: 3, country: "Canada" },
+  { id: 4, country: "Germany" },
+  { id: 5, country: "Japan" },
+  { id: 6, country: "South Korea" },
+  { id: 7, country: "France" },
+  { id: 8, country: "India" },
+  { id: 9, country: "Russia" },
+  { id: 10, country: "China" },
+  { id: 11, country: "Singapore" },
 ];
+
+const flags=[
+  "/emojione-flag-for-australia.svg",
+  "/usa.svg","/uk.svg","/canada.svg","/germany.svg","/japan.svg","/southkorea.svg","/france.svg","/india.svg","/russia.svg",
+  "/china.svg","/singapore.svg"
+]
 const years = ["FY 2023-24", "FY 2022-23"];
 
 
@@ -68,7 +74,7 @@ const App = () => {
   const [longTermDiscount, setlongTermDiscount] = useState(0);
   const [netCapitalGains, setnetCapitalGains] = useState(0);
   const [finaltax, setfinaltax] = useState(0);
-  const [countryname, setcountryname] = useState("Australia");
+  const [countryid, setcountryid] = useState(0);
 
   const getNumericValue = (formattedValue) => {
     return parseFloat(formattedValue.replace(/,/g, ""));
@@ -123,7 +129,7 @@ const App = () => {
       <div className="frame">
         <div className="frame-wrapper">
           <div className="div">
-            <p className="text-wrapper">Free Crypto Tax Calculator {countryname}</p>
+            <p className="text-wrapper">Free Crypto Tax Calculator {countries[countryid].country}</p>
             <div className="div-2">
               <div className="div-3">
                 <div className="div-4">
@@ -156,14 +162,14 @@ const App = () => {
                           <img
                             className="emojione-flag-for"
                             alt="Emojione flag for"
-                            src="/emojione-flag-for-australia.svg"
+                            src={flags[countryid]}
                           />
                           <div>
-                            <select className="text-wrapper-4 sel" onChange={(e) => setcountryname(e.target.value)}>
+                            <select className="text-wrapper-4 sel" onChange={(e) => setcountryid(e.target.value)}>
                               {countries.map((e) => {
                                 return (
                                   <>
-                                    <option value={e}>{e}</option>
+                                    <option value={e.id}>{e.country}</option>
                                   </>
                                 )
                               })}
