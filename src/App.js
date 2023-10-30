@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import classNames from 'classnames';
 import "./App.css";
 import Cleave from "cleave.js/react";
@@ -76,6 +76,44 @@ const App = () => {
   const [finaltax, setfinaltax] = useState(0);
   const [countryid, setcountryid] = useState(0);
 
+  useEffect(() => {
+    if (taxind === 0) {
+      setfinaltax(0);
+    } else if (taxind === 1) {
+      if (shortterm) {
+        let x = (19 * netCapitalGains) / 100;
+        setfinaltax(x);
+      } else {
+        let x = (19 * longTermDiscount) / 100;
+        setfinaltax(x);
+      }
+    } else if (taxind === 2) {
+      if (shortterm) {
+        let x = (32.5 * netCapitalGains) / 100;
+        setfinaltax(x);
+      } else {
+        let x = (32.5 * longTermDiscount) / 100;
+        setfinaltax(x);
+      }
+    } else if (taxind === 3) {
+      if (shortterm) {
+        let x = (37 * netCapitalGains) / 100;
+        setfinaltax(x);
+      } else {
+        let x = (37 * longTermDiscount) / 100;
+        setfinaltax(x);
+      }
+    } else if (taxind === 4) {
+      if (shortterm) {
+        let x = (45 * netCapitalGains) / 100;
+        setfinaltax(x);
+      } else {
+        let x = (45 * longTermDiscount) / 100;
+        setfinaltax(x);
+      }
+    }
+  }, [netCapitalGains,longTermDiscount,taxind,shortterm]);
+
   const getNumericValue = (formattedValue) => {
     return parseFloat(formattedValue.replace(/,/g, ""));
   };
@@ -102,47 +140,10 @@ const App = () => {
       if (capitalgains >= 0) {
         setlongTermDiscount(capitalgains / 2);
       }
-
       if (longterm) {
         setnetCapitalGains((capitalgains - longTermDiscount));
       } else {
         setnetCapitalGains(capitalgains);
-      }
-
-      if (taxind === 0) {
-        setfinaltax(0);
-      } else if (taxind === 1) {
-        if (shortterm) {
-          let x = 19 * capitalgains / 100
-          setfinaltax(x);
-        } else {
-          let x = 19 * longTermDiscount / 100
-          setfinaltax(x);
-        }
-      } else if (taxind === 2) {
-        if (shortterm) {
-          let x = 32.5 * capitalgains / 100
-          setfinaltax(x);
-        } else {
-          let x = 32.5 * longTermDiscount / 100
-          setfinaltax(x);
-        }
-      } else if (taxind === 3) {
-        if (shortterm) {
-          let x = 37 * capitalgains / 100
-          setfinaltax(x);
-        } else {
-          let x = 37 * longTermDiscount / 100
-          setfinaltax(x);
-        }
-      } else if (taxind === 4) {
-        if (shortterm) {
-          let x = 45 * capitalgains / 100
-          setfinaltax(x);
-        } else {
-          let x = 45 * longTermDiscount / 100
-          setfinaltax(x);
-        }
       }
     }
 
