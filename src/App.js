@@ -55,10 +55,10 @@ const countries = [
   { id: 11, country: "Singapore" },
 ];
 
-const flags=[
+const flags = [
   "/emojione-flag-for-australia.svg",
-  "/usa.svg","/uk.svg","/canada.svg","/germany.svg","/japan.svg","/southkorea.svg","/france.svg","/india.svg","/russia.svg",
-  "/china.svg","/singapore.svg"
+  "/usa.svg", "/uk.svg", "/canada.svg", "/germany.svg", "/japan.svg", "/southkorea.svg", "/france.svg", "/india.svg", "/russia.svg",
+  "/china.svg", "/singapore.svg"
 ]
 const years = ["FY 2023-24", "FY 2022-23"];
 
@@ -91,57 +91,59 @@ const App = () => {
   const handleTaxIndex = (e) => {
     settaxind(parseInt(e.target.value));
     calculate();
-    
+
   }
   const calculate = () => {
-    let saleprice = getNumericValue(sale);
-    let purchaseprice = getNumericValue(purchase);
-    let expenseprice = getNumericValue(expense);
-    setcapitalgains(saleprice - purchaseprice - expenseprice);
-    if (capitalgains >= 0) {
-      setlongTermDiscount(capitalgains / 2);
-    }
+    if (purchase !== "" && sale !== "" && expense !== "") {
+      let saleprice = getNumericValue(sale);
+      let purchaseprice = getNumericValue(purchase);
+      let expenseprice = getNumericValue(expense);
+      setcapitalgains((saleprice - purchaseprice) - expenseprice);
+      if (capitalgains >= 0) {
+        setlongTermDiscount(capitalgains / 2);
+      }
 
-    if (longterm) {
-      console.log("longterm hit")
-      setnetCapitalGains((capitalgains - longTermDiscount));
-    } else {
-      setnetCapitalGains(capitalgains);
-    }
+      if (longterm) {
+        setnetCapitalGains((capitalgains - longTermDiscount));
+      } else {
+        setnetCapitalGains(capitalgains);
+      }
 
-    if (taxind === 0) {
-      setfinaltax(0);
-    } else if (taxind === 1) {
-      if(shortterm){
-        let x = 19 * capitalgains / 100
-        setfinaltax(x);
-      }else{
-      let x = 19 * longTermDiscount / 100
-      setfinaltax(x);
+      if (taxind === 0) {
+        setfinaltax(0);
+      } else if (taxind === 1) {
+        if (shortterm) {
+          let x = 19 * capitalgains / 100
+          setfinaltax(x);
+        } else {
+          let x = 19 * longTermDiscount / 100
+          setfinaltax(x);
+        }
+      } else if (taxind === 2) {
+        if (shortterm) {
+          let x = 32.5 * capitalgains / 100
+          setfinaltax(x);
+        } else {
+          let x = 32.5 * longTermDiscount / 100
+          setfinaltax(x);
+        }
+      } else if (taxind === 3) {
+        if (shortterm) {
+          let x = 37 * capitalgains / 100
+          setfinaltax(x);
+        } else {
+          let x = 37 * longTermDiscount / 100
+          setfinaltax(x);
+        }
+      } else if (taxind === 4) {
+        if (shortterm) {
+          let x = 45 * capitalgains / 100
+          setfinaltax(x);
+        } else {
+          let x = 45 * longTermDiscount / 100
+          setfinaltax(x);
+        }
       }
-    } else if (taxind === 2) {
-      if(shortterm){
-        let x = 32.5 * capitalgains / 100
-        setfinaltax(x);
-      }else{
-      let x = 32.5 * longTermDiscount / 100
-      setfinaltax(x);
-      }
-    } else if (taxind === 3) {
-      if(shortterm){
-        let x = 37 * capitalgains / 100
-        setfinaltax(x);
-      }else{
-      let x = 37 * longTermDiscount / 100
-      setfinaltax(x);
-      }
-    } else if (taxind === 4) {
-      if(shortterm){
-        let x = 45 * capitalgains / 100
-        setfinaltax(x);
-      }else{
-      let x = 45 * longTermDiscount / 100
-      setfinaltax(x);}
     }
 
   }
