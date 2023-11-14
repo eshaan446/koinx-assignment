@@ -10,6 +10,7 @@ import flags from '../data.js/flags'
 import years from '../data.js/years'
 import Faq from './Faq';
 
+const currecysigndata=['$','₹']
 const Calculator = () => {
     const [purchase, setpurchase] = useState("");
     const [sale, setsale] = useState("");
@@ -22,6 +23,7 @@ const Calculator = () => {
     const [netCapitalGains, setnetCapitalGains] = useState(0);
     const [finaltax, setfinaltax] = useState(0);
     const [countryid, setcountryid] = useState(0);
+    const [currencysign,setcurrencysign]=useState('$');
   
     useEffect(() => {
       if (taxind === 0) {
@@ -69,7 +71,11 @@ const Calculator = () => {
           setlongTermDiscount(capitalgains / 2);
         }
         if (longterm) {
-          setnetCapitalGains((capitalgains - longTermDiscount));
+          setTimeout(()=>
+          setnetCapitalGains((capitalgains - longTermDiscount))
+
+          ,2000)
+          
         } else {
           setnetCapitalGains(capitalgains);
         }
@@ -139,13 +145,13 @@ const Calculator = () => {
                   <div className="div-10">
                     <p className="text-wrapper-5">Enter purchase price of Crypto</p>
                     <div className="div-wrapper-2">
-                      <div className="text-wrapper-3">$ <Cleave className="input" options={{ numeral: true }} value={purchase} onChange={(e) => handlePurchase(e)} /></div>
+                      <div className="text-wrapper-3">{currecysigndata[countryid]} <Cleave className="input" options={{ numeral: true }} value={purchase} onChange={(e) => handlePurchase(e)} /></div>
                     </div>
                   </div>
                   <div className="div-10">
                     <p className="text-wrapper-5">Enter sale price of Crypto</p>
                     <div className="div-wrapper-2">
-                      <div className="text-wrapper-3">$  <Cleave className="input" options={{ numeral: true }} value={sale} onChange={(e) => handleSale(e)} /></div>
+                      <div className="text-wrapper-3">{currecysigndata[countryid]} <Cleave className="input" options={{ numeral: true }} value={sale} onChange={(e) => handleSale(e)} /></div>
                     </div>
                   </div>
                 </div>
@@ -153,7 +159,7 @@ const Calculator = () => {
                   <div className="div-10">
                     <div className="text-wrapper-5">Enter your Expenses</div>
                     <div className="div-wrapper-2">
-                      <div className="text-wrapper-3">$ <Cleave className="input" options={{ numeral: true }} value={expense} onChange={(e) => handleExpense(e)} /></div>
+                      <div className="text-wrapper-3">{currecysigndata[countryid]} <Cleave className="input" options={{ numeral: true }} value={expense} onChange={(e) => handleExpense(e)} /></div>
                     </div>
                   </div>
                   <div className="div-10">
@@ -184,19 +190,18 @@ const Calculator = () => {
                         <select className="text-wrapper-7 sel" onChange={(e) => handleTaxIndex(e)} >
   
                           {
-                            taxbrackets.map((e) => {
+                            taxbrackets.map((e,id) => {
                               return (
                                 <>
-                                  <option key={e.id} value={e.id}>{e.data}</option>
+                                  {/* <option key={e.id} value={e.id}>{currecysigndata[countryid]}&nbsp;{e.data1} { (e.data2!=="") ? `${currecysigndata[countryid]} ${e.data2}`:""}</option> */}
+                                  <option key={e.id} value={e.id}>{e.data.replaceAll('$',currecysigndata[countryid])}</option>
                                 </>
                               )
                             })
                           }
                         </select>
                       </div>
-                      <div className="emojione-flag-for">
-                        {/* <img alt="Arrowdown" src="/arrow.svg"/>*/}
-                      </div>
+                      
                     </div>
                   </div>
                   <div className="div-15">
@@ -208,13 +213,13 @@ const Calculator = () => {
                   <div className="div-10">
                     <div className="text-wrapper-5">Capital gains amount</div>
                     <div className="div-wrapper-2">
-                      <div className="text-wrapper-3">$  <Cleave className="input" options={{ numeral: true }} value={capitalgains} disabled /></div>
+                      <div className="text-wrapper-3">{currecysigndata[countryid]}  <Cleave className="input" options={{ numeral: true }} value={capitalgains} disabled /></div>
                     </div>
                   </div>
                   <div className="div-10">
                     <div className="text-wrapper-5">Discount for long term gains</div>
                     <div className="div-wrapper-2">
-                      <div className="text-wrapper-3">$   <Cleave className="input" options={{ numeral: true }} value={(capitalgains > 0) ? netCapitalGains : 0} disabled />
+                      <div className="text-wrapper-3">{currecysigndata[countryid]}   <Cleave className="input" options={{ numeral: true }} value={(capitalgains > 0) ? netCapitalGains : 0} disabled />
   
                         { }</div>
                     </div>
@@ -222,12 +227,14 @@ const Calculator = () => {
                 </div>)}
                 <div className="div-16">
                   <div className="div-17">
-                    <p className="text-wrapper-9">Net Capital gains tax amount</p>
-                    <div className="text-wrapper-10">${(netCapitalGains >= 0 && !isNaN(netCapitalGains)) ? netCapitalGains : 0}</div>
+                    <p className="text-wrapper-9">Net Capital gains tax amount*</p>
+                    { (purchase !=="" && netCapitalGains===0) && <span>Loading</span>}
+                    <div className="text-wrapper-10">{currecysigndata[countryid]}{(netCapitalGains >= 0 && !isNaN(netCapitalGains)) ? netCapitalGains : 0}</div>
                   </div>
                   <div className="div-18">
                     <p className="text-wrapper-9">The tax you need to pay*</p>
-                    <div className="text-wrapper-11">${(finaltax >= 0 && !isNaN(finaltax)) ? finaltax : 0}</div>
+                    { (purchase !=="" && netCapitalGains===0) && <span>Loading</span>}
+                    <div className="text-wrapper-11">{currecysigndata[countryid]}{(finaltax >= 0 && !isNaN(finaltax)) ? finaltax : 0}</div>
                   </div>
                 </div>
               </div>
